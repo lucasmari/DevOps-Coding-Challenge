@@ -24,5 +24,6 @@ Considerations: since the app should only be available until the evaluation of t
 
 1. Containerize app (create requirements.txt and Dockerfile)
 2. Test it locally
-3. Remove debug option (Use flask env to enable only in dev)
-4. Improve app configuration with envs
+3. Use gunicorn as production server (recommended in flask docs)
+4. Remove debug option (Use flask env to enable only in dev)
+5. Improve app configuration with envs
