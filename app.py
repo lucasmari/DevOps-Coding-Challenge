@@ -3,10 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 # Create a Flask application
 app = Flask(__name__)
-app.config.from_object('default_settings')
-app.config.from_envvar('APP_SETTINGS')
 
 # Configure SQLite database
+app.config.from_prefixed_env()
+app.config["SQLALCHEMY_DATABASE_URI"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -21,7 +21,7 @@ class Item(db.Model):
 # Route for listing items
 
 
-@app.route('/')
+@ app.route('/')
 def index():
     medications = Item.query.all()
     return render_template('index.html', medications=medications)
@@ -29,7 +29,7 @@ def index():
 # Route for adding new item
 
 
-@app.route('/add', methods=['POST'])
+@ app.route('/add', methods=['POST'])
 def add_item():
     name = request.form['name']
     dosage = request.form['dosage']

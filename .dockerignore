@@ -1,2 +1,5 @@
+compose.yaml
+infra/
 instance/
 *.md
+*.sh
