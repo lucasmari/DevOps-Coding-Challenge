@@ -1,4 +1,5 @@
 compose.yaml
+images/
 infra/
 instance/
 *.md

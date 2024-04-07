@@ -37,8 +37,19 @@ Considerations: since the app should only be available until the evaluation of t
 
 1. Create Terraform files
 2. Create scripts for deployment and destruction of cloud resources
-3. Run and test it locally
+3. Run and test them locally
 4. Fix a lot of stuff:
     - psycopg2 was not found, when running the container in EC2 -> added to requirements.txt
     - RDS password was being managed by Secrets Manager (default of the module I'm using), so the password I set in tf was not being used, therefore there was an authentication error -> first, I tried to retrieve the secret from the SM, passing it to the EC2 user_data, but the error persisted, maybe because of the symbols used in the generated password, so I had to manually escape some of the symbols to get it working. I thought that would be worth for a real production scenario, but for this project only, using the password in plain text and versioned is fine.
     - I was using 4 workers for gunicorn server, but they would try to recreate the table even if it already existed, so that's something we could solve by using "create table if not exists", but again, the simpler solution was to use only 1 worker, which is fine for this scenario.
+5. Working! :tada:
+
+## DB Security Measures
+
+1. Create it in private subnets and not publicly accessible
+2. Storage encrypted
+3. Deletion protection
+4. Don't use root credentials (create minimum privileges to an app user and set the management of the root password to Secrets Manager)
+5. Enable automated backups
+6. Allow inbound traffic from the application Security Group only
+7. Multi-AZ for more availability and backup in case of outages

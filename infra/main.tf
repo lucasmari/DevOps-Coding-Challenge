@@ -186,6 +186,8 @@ module "rds" {
 
   backup_retention_period = 0
 
+  performance_insights_enabled = true
+
   tags = var.tags
 }
 
