@@ -20,7 +20,7 @@
 This project is using ephemeral environments, so you need to create a branch starting with feat* then push a commit to it.
 
 > This will trigger a workflow configured in `.github/workflows/cicd.yaml`, which uses the deploy script to provision all the resources in AWS using Terraform.
-> You can see the application by accessing the EC2 DNS (Terraform output) provided in the workflow logs.
+> After a minute or two you can see the application by accessing the EC2 DNS (Terraform output) provided in the workflow logs.
 
 ### Decommission
 
