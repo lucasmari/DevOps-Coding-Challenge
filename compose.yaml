@@ -9,5 +9,5 @@ services:
     develop:
       watch:
         - action: sync
-          path: .
-          target: /app
+          path: ./flaskr
+          target: /app/flaskr

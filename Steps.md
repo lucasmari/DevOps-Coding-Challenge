@@ -16,7 +16,7 @@ Considerations: since the app should only be available until the evaluation of t
 - Hosting/Cloud provider: AWS (most familiar with)
 - Beanstalk (quoted in Flask docs): may provision more expensive resources
 - Containerized app: more portable
-- Main AWS services: EC2, RDS, CloudWatch
+- Main AWS services: EC2, RDS
 - Infra provisioning: Terraform (most familiar with)
 - CI/CD: GitHub Actions (most familiar with)
 - Use ephemeral environments based on feature branches (starting with feat*) to assure the resources will be cleaned (avoid extra costs) after being successfully deployed and the branch removed
@@ -53,3 +53,19 @@ Considerations: since the app should only be available until the evaluation of t
 5. Enable automated backups
 6. Allow inbound traffic from the application Security Group only
 7. Multi-AZ for more availability and backup in case of outages
+
+## Application Tests for CI
+
+1. Create simple unit tests (modularized app to enable pytest fixtures)
+2. Test!
+
+## CICD
+
+1. Create workflows
+2. Configure repository secrets in GitHub
+3. Test
+
+## Production-ready pt.2
+
+1. Add Elastic APM and Heartbeat to app
+2. Test

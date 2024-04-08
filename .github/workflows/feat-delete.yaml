@@ -1,0 +1,19 @@
+name: Delete Feature
+
+on:
+  delete:
+
+jobs:
+  delete:
+    name: Delete
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Destroy infrastructure
+        run: ./destroy.sh

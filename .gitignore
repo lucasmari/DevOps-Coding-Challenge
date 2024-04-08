@@ -1,1 +1,5 @@
 .terraform
+instance
+.pytest*
+__pycache__
+.venv
