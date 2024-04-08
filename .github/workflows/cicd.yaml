@@ -17,7 +17,7 @@ jobs:
         run: ./test.sh
 
   build-deploy:
-    if: github.event_name == "push" && ${{ startsWith(github.ref, 'refs/heads/feat') }}
+    if: github.event_name == 'push' &&  startsWith(github.ref, 'refs/heads/feat')
     needs: test
     name: Build and Deploy
     runs-on: ubuntu-latest
