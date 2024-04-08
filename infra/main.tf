@@ -30,10 +30,11 @@ data "template_file" "ec2_startup" {
 #               ===== [ EC2 ] =====               
 #-------------------------------------------------
 
-resource "aws_key_pair" "ubuntu" {
-  key_name   = "ubuntu-key"
-  public_key = file("~/.ssh/aws.pub")
-}
+# Only for local testing
+# resource "aws_key_pair" "ubuntu" {
+#   key_name   = "ubuntu-key"
+#   public_key = file("~/.ssh/aws.pub")
+# }
 
 module "ec2_sg" {
   source = "terraform-aws-modules/security-group/aws"
@@ -70,7 +71,7 @@ module "ec2" {
 
   iam_instance_profile = aws_iam_instance_profile.ec2.name
 
-  key_name  = aws_key_pair.ubuntu.key_name
+  # key_name  = aws_key_pair.ubuntu.key_name
   user_data = data.template_file.ec2_startup.rendered
 
   depends_on = [
@@ -126,6 +127,7 @@ resource "aws_iam_role_policy" "ec2" {
         "ecr:GetAuthorizationToken",
         "ecr:BatchGetImage",
         "ecr:GetDownloadUrlForLayer"
+      #   run: ./build-deploy.sh
       ],
       "Effect": "Allow",
       "Resource": "*"
