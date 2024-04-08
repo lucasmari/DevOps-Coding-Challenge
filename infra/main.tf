@@ -127,7 +127,6 @@ resource "aws_iam_role_policy" "ec2" {
         "ecr:GetAuthorizationToken",
         "ecr:BatchGetImage",
         "ecr:GetDownloadUrlForLayer"
-      #   run: ./build-deploy.sh
       ],
       "Effect": "Allow",
       "Resource": "*"
