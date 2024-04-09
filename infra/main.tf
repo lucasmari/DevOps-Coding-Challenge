@@ -76,6 +76,7 @@ module "ec2" {
   vpc_security_group_ids      = [module.ec2_sg.security_group_id]
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
+  instance_type               = "t3.small"
 
   # key_name  = aws_key_pair.ubuntu.key_name
   user_data = data.template_file.ec2_startup.rendered
