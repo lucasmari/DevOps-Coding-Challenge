@@ -27,3 +27,5 @@ cd DevOps-Coding-Challenge || exit
 # Setup, build and run app with monitoring
 docker compose up setup
 docker compose up -d
+
+# change
