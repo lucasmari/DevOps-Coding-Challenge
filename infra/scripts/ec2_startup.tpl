@@ -28,4 +28,3 @@ cd DevOps-Coding-Challenge || exit
 docker compose up setup
 docker compose up -d
 
-# change
