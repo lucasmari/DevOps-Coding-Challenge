@@ -68,5 +68,15 @@ Considerations: since the app should only be available until the evaluation of t
 
 ## Production-ready pt.2
 
-1. Add Elastic APM and Heartbeat to app
-2. Test
+1. Add ELK stack (except for Logstash, which is not necessary for this project)
+2. Add Heartbeat and APM servers to extend monitoring capabilities
+3. Add Elastic APM agent to the app
+4. Test
+5. The data from the APM agent is not appearing in Kibana somehow, maybe related to this [issue](https://github.com/elastic/apm-agent-python/issues/1331)
+
+## Final test
+
+1. Run the entire workflow and access it with the provided DNS
+2. Fix some errors:
+    - The EC2 instance type t3.micro was too small for the app and the ELK stack, so I had to change it to t3.small (in production the monitoring stack should be in a separate instance, or just use Elastic Cloud for this purpose)
+    - The root block volume was too small for the ELK stack, so I had to increase it
