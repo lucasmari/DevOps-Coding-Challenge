@@ -67,7 +67,12 @@ The configuration and docker files are from this [repository](https://github.com
 #### Application
 
 - A Heartbeat monitor is checking the health of the application every 5 seconds
+
+![](images/heartbeat_monitor.png)
+
 - APM agent is installed in the application to monitor the performance
+
+![](images/apm_service.png)
 
 ## Challenge Steps
 

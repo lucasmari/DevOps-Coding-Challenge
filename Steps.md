@@ -73,6 +73,7 @@ Considerations: since the app should only be available until the evaluation of t
 3. Add Elastic APM agent to the app
 4. Test
 5. The data from the APM agent is not appearing in Kibana somehow, maybe related to this [issue](https://github.com/elastic/apm-agent-python/issues/1331)
+    - After tweaking the elasticsearch java options, the data started to appear in Kibana
 
 ## Final test
 
