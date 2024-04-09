@@ -30,7 +30,7 @@ Just merge the feature branch to main or delete it.
 
 ## Scripts
 
-The setup.sh creates the base infra S3, ECR and KMS to store Terraform state and images. It's ran only a single time and the state of these resources are versioned.
+The setup.sh creates the base infra S3, ECR and KMS to store Terraform state and images. It should be ran only a single time and the state of these resources are versioned.
 
 The deploy.sh creates all the necessary infra for the application and database.
 

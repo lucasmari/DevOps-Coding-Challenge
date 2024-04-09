@@ -1,4 +1,4 @@
-variable "account_id" {}
+variable "branch_name" {}
 
 variable "project_name" {
   default = "flask-meds"

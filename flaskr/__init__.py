@@ -1,10 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from elasticapm.contrib.flask import ElasticAPM
+
+apm = ElasticAPM()
 
 
 def create_app():
     # Create a Flask application
     app = Flask(__name__)
+
+    # Configure Elastic APM
+    apm.init_app(app, service_name='flask-meds', secret_token='',
+                 server_url='http://apm-server:8200')
 
     # Configure SQLite database
     app.config.from_prefixed_env()

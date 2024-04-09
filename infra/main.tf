@@ -20,11 +20,10 @@ data "external" "myip" {
 data "template_file" "ec2_startup" {
   template = file("./scripts/ec2_startup.tpl")
   vars = {
-    account_id = var.account_id
+    branch     = var.branch_name
     db_address = module.rds.db_instance_endpoint
   }
 }
-
 
 #-------------------------------------------------
 #               ===== [ EC2 ] =====               
@@ -51,7 +50,15 @@ module "ec2_sg" {
       from_port   = 5000
       to_port     = 5000
       protocol    = "tcp"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = var.all_cidr
+      description = "Flask app"
+    },
+    {
+      from_port   = 5601
+      to_port     = 5601
+      protocol    = "tcp"
+      cidr_blocks = var.all_cidr
+      description = "Kibana"
   }]
 
   egress_rules = ["all-all"]
@@ -69,8 +76,6 @@ module "ec2" {
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
-  iam_instance_profile = aws_iam_instance_profile.ec2.name
-
   # key_name  = aws_key_pair.ubuntu.key_name
   user_data = data.template_file.ec2_startup.rendered
 
@@ -79,61 +84,6 @@ module "ec2" {
   ]
 
   tags = var.tags
-}
-
-#-------------------------------------------------
-#               ===== [ IAM ] =====               
-#-------------------------------------------------
-
-resource "aws_iam_role" "ec2" {
-  name = var.project_name
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
-
-  tags = var.tags
-}
-
-resource "aws_iam_instance_profile" "ec2" {
-  name = var.project_name
-  role = aws_iam_role.ec2.name
-
-  tags = var.tags
-}
-
-resource "aws_iam_role_policy" "ec2" {
-  name = var.project_name
-  role = aws_iam_role.ec2.id
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchGetImage",
-        "ecr:GetDownloadUrlForLayer"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
 }
 
 #-------------------------------------------------

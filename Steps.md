@@ -64,6 +64,7 @@ Considerations: since the app should only be available until the evaluation of t
 1. Create workflows
 2. Configure repository secrets in GitHub
 3. Test
+4. Fix security group ingress (it was only allowing traffic from the IP of the instance deploying the app)
 
 ## Production-ready pt.2
 
