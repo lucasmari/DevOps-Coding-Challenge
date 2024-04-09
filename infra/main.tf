@@ -13,9 +13,10 @@ provider "aws" {
 data "aws_availability_zones" "available" {
 }
 
-data "external" "myip" {
-  program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
-}
+# Only for local testing
+# data "external" "myip" {
+#   program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
+# }
 
 data "template_file" "ec2_startup" {
   template = file("./scripts/ec2_startup.tpl")
@@ -42,10 +43,10 @@ module "ec2_sg" {
   vpc_id = module.vpc.vpc_id
 
   ingress_with_cidr_blocks = [
-    {
-      rule        = "ssh-tcp"
-      cidr_blocks = "${data.external.myip.result.ip}/32"
-    },
+    # {
+    #   rule        = "ssh-tcp"
+    #   cidr_blocks = "${data.external.myip.result.ip}/32"
+    # },
     {
       from_port   = 5000
       to_port     = 5000
@@ -82,6 +83,8 @@ module "ec2" {
   depends_on = [
     module.rds
   ]
+
+  user_data_replace_on_change = true
 
   tags = var.tags
 }
