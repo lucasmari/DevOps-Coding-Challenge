@@ -39,4 +39,4 @@ jobs:
       - name: Deploy
         run: |
           export TF_VAR_branch_name=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
-          echo $TF_VAR_branch_name
+          ./deploy.sh

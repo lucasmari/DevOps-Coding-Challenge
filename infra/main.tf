@@ -21,8 +21,8 @@ data "aws_availability_zones" "available" {
 data "template_file" "ec2_startup" {
   template = file("./scripts/ec2_startup.tpl")
   vars = {
-    branch     = var.branch_name
-    db_address = module.rds.db_instance_endpoint
+    branch_name = var.branch_name
+    db_address  = module.rds.db_instance_endpoint
   }
 }
 
