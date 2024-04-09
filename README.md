@@ -5,13 +5,14 @@
 ### Prerequisites
 
 - Docker
-- Docker Compose
 
 ### Installation and Running
 
 1. Clone the repository
 2. Run `docker compose watch` (hot reloading!)
-3. Access the application at `http://localhost:5000`
+3. Access the application at `http://localhost:5000` and Kibana at `http://localhost:5601`
+
+> Don't forget to stop the containers after you're done with `docker compose down`
 
 ## Production
 
@@ -30,7 +31,7 @@ Just merge the feature branch to main or delete it.
 
 ## Scripts
 
-The setup.sh creates the base infra S3, ECR and KMS to store Terraform state and images. It should be ran only a single time and the state of these resources are versioned.
+The setup.sh creates the base infra S3, and KMS to store Terraform state. It should be ran only a single time and the state of these resources are versioned.
 
 The deploy.sh creates all the necessary infra for the application and database.
 

@@ -79,26 +79,21 @@ module "ec2" {
   instance_type               = "t3.small"
 
   # key_name  = aws_key_pair.ubuntu.key_name
-  user_data = data.template_file.ec2_startup.rendered
+  user_data                   = data.template_file.ec2_startup.rendered
+  user_data_replace_on_change = true
 
   depends_on = [
     module.rds
   ]
 
-  user_data_replace_on_change = true
-
-  tags = var.tags
-}
-
-resource "aws_volume_attachment" "this" {
-  device_name = "/dev/sdh"
-  volume_id   = aws_ebs_volume.this.id
-  instance_id = module.ec2.id
-}
-
-resource "aws_ebs_volume" "this" {
-  availability_zone = module.ec2.availability_zone
-  size              = 20
+  root_block_device = [
+    {
+      encrypted   = false
+      volume_type = "gp3"
+      throughput  = 200
+      volume_size = 50
+    },
+  ]
 
   tags = var.tags
 }
