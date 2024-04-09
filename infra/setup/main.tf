@@ -3,26 +3,6 @@ provider "aws" {
 }
 
 #-------------------------------------------------
-#               ===== [ ECR ] =====               
-#-------------------------------------------------
-
-resource "aws_ecr_repository" "repo" {
-  name = var.project_name
-
-  encryption_configuration {
-    encryption_type = "KMS"
-  }
-
-  force_delete = true
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-
-  tags = var.tags
-}
-
-#-------------------------------------------------
 #               ===== [ KMS ] =====               
 #-------------------------------------------------
 

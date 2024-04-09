@@ -19,7 +19,7 @@ jobs:
   build-deploy:
     if: github.event_name == 'push' &&  startsWith(github.ref, 'refs/heads/feat')
     needs: test
-    name: Build and Deploy
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -36,5 +36,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Build and deploy
-        run: ./build-deploy.sh
+      - name: Deploy
+        run: |
+          export TF_VAR_branch_name=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
+          ./deploy.sh

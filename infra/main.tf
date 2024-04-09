@@ -13,18 +13,18 @@ provider "aws" {
 data "aws_availability_zones" "available" {
 }
 
-data "external" "myip" {
-  program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
-}
+# Only for local testing
+# data "external" "myip" {
+#   program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
+# }
 
 data "template_file" "ec2_startup" {
   template = file("./scripts/ec2_startup.tpl")
   vars = {
-    account_id = var.account_id
-    db_address = module.rds.db_instance_endpoint
+    branch_name = var.branch_name
+    db_address  = module.rds.db_instance_endpoint
   }
 }
-
 
 #-------------------------------------------------
 #               ===== [ EC2 ] =====               
@@ -43,15 +43,23 @@ module "ec2_sg" {
   vpc_id = module.vpc.vpc_id
 
   ingress_with_cidr_blocks = [
-    {
-      rule        = "ssh-tcp"
-      cidr_blocks = "${data.external.myip.result.ip}/32"
-    },
+    # {
+    #   rule        = "ssh-tcp"
+    #   cidr_blocks = "${data.external.myip.result.ip}/32"
+    # },
     {
       from_port   = 5000
       to_port     = 5000
       protocol    = "tcp"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = var.all_cidr
+      description = "Flask app"
+    },
+    {
+      from_port   = 5601
+      to_port     = 5601
+      protocol    = "tcp"
+      cidr_blocks = var.all_cidr
+      description = "Kibana"
   }]
 
   egress_rules = ["all-all"]
@@ -68,72 +76,26 @@ module "ec2" {
   vpc_security_group_ids      = [module.ec2_sg.security_group_id]
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
-
-  iam_instance_profile = aws_iam_instance_profile.ec2.name
+  instance_type               = "t3.small"
 
   # key_name  = aws_key_pair.ubuntu.key_name
-  user_data = data.template_file.ec2_startup.rendered
+  user_data                   = data.template_file.ec2_startup.rendered
+  user_data_replace_on_change = true
 
   depends_on = [
     module.rds
   ]
 
-  tags = var.tags
-}
-
-#-------------------------------------------------
-#               ===== [ IAM ] =====               
-#-------------------------------------------------
-
-resource "aws_iam_role" "ec2" {
-  name = var.project_name
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
+  root_block_device = [
     {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
+      encrypted   = false
+      volume_type = "gp3"
+      throughput  = 200
+      volume_size = 50
+    },
   ]
-}
-EOF
 
   tags = var.tags
-}
-
-resource "aws_iam_instance_profile" "ec2" {
-  name = var.project_name
-  role = aws_iam_role.ec2.name
-
-  tags = var.tags
-}
-
-resource "aws_iam_role_policy" "ec2" {
-  name = var.project_name
-  role = aws_iam_role.ec2.id
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchGetImage",
-        "ecr:GetDownloadUrlForLayer"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
 }
 
 #-------------------------------------------------
