@@ -9,8 +9,9 @@
 ### Installation and Running
 
 1. Clone the repository
-2. Run `docker compose watch` (hot reloading!)
-3. Access the application at `http://localhost:5000` and Kibana at `http://localhost:5601`
+2. Run `export FLASK_SQLALCHEMY_DATABASE_URI=sqlite:///items.db`
+3. Run `docker compose watch` (hot reloading!)
+4. Access the application at `http://localhost:5000` and Kibana at `http://localhost:5601`
 
 > Kibana credentials are `elastic:changeme` (of course this is not recommended for production)
 > Don't forget to stop the containers after you're done with `docker compose down`
